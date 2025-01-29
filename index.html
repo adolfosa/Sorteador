@@ -122,18 +122,19 @@
     <div id="ruleta">
         <div id="pointer">↑</div>
         <!-- Números de la ruleta -->
-        <div class="numero" style="top: 10px; left: 50%; transform: translateX(-50%);">1</div>
-        <div class="numero" style="top: 50%; left: 5px; transform: translateY(-50%);">2</div>
-        <div class="numero" style="top: 90%; left: 50%; transform: translateX(-50%);">3</div>
-        <div class="numero" style="top: 50%; right: 5px; transform: translateY(-50%);">4</div>
-        <div class="numero" style="top: 10px; left: 50%; transform: translateX(-50%);">5</div>
-        <div class="numero" style="top: 50%; left: 50%; transform: translateY(-50%);">6</div>
-        <div class="numero" style="top: 90%; left: 50%; transform: translateX(-50%);">7</div>
-        <div class="numero" style="top: 50%; right: 5px; transform: translateY(-50%);">8</div>
-        <div class="numero" style="top: 50%; left: 5px; transform: translateY(-50%);">9</div>
-        <div class="numero" style="top: 90%; left: 50%; transform: translateX(-50%);">10</div>
+        <div class="numero" style="top: 0%; left: 60%; transform: translateX(-50%);">1</div> <!-- Top Center -->
+        <div class="numero" style="top: 18%; left: 85%; transform: translateY(-50%);">2</div> <!-- 2 en el borde superior derecho -->
+        <div class="numero" style="top: 50%; left: 90%; transform: translateY(-50%) translateX(-100%);">3</div> <!-- 3 en la parte superior derecha -->
+        <div class="numero" style="top: 80%; left: 85%; transform: translateY(-50%);">4</div> <!-- 4 en la parte inferior derecha -->
+        <div class="numero" style="top: 100%; left: 60%; transform: translateX(-50%) translateY(-100%);">5</div> <!-- 5 en la parte inferior central -->
+        <div class="numero" style="top: 82%; left: 15%; transform: translateY(-50%);">6</div> <!-- 6 en la parte inferior izquierda -->
+        <div class="numero" style="top: 50%; left: 10%; transform: translateY(-50%) translateX(-100%);">7</div> <!-- 7 en la parte izquierda media -->
+        <div class="numero" style="top: 18%; left: 15%; transform: translateY(-50%);">8</div> <!-- 8 en la parte superior izquierda -->
+        <div class="numero" style="top: 0%; left: 40%; transform: translateX(-50%);">9</div> <!-- 9 en la parte superior central -->
+        <div class="numero" style="top: 95%; left: 39%; transform: translateX(-50%) translateY(-100%);">10</div> <!-- 10 en la parte inferior izquierda -->
     </div>
     <div id="ruletaResultado"></div>
+    
     <button onclick="girarRuleta()">Girar Ruleta</button>
 
     <script>
@@ -188,28 +189,37 @@
                 barraCarga.style.display = "none"; // Ocultar la barra de carga
 
             }, tiempoEspera * 1000); // El sorteo se retrasará durante el tiempo completo de espera
-        }
-
+        }        
+    </script>
+    <script>
+        let rotacionActual = 0; // Para almacenar la rotación acumulada
+    
         function girarRuleta() {
             const ruleta = document.getElementById("ruleta");
             const ruletaResultado = document.getElementById("ruletaResultado");
             const pointer = document.getElementById("pointer");
-
-            // Generar el ángulo aleatorio para girar la ruleta
-            const anguloAleatorio = Math.floor(Math.random() * 360);
-
+    
+            // Definir el número de giros completos y un ángulo adicional aleatorio
+            const girosCompletos = Math.floor(Math.random() * 3) + 3; // 3 a 5 giros completos
+            const anguloAdicional = Math.floor(Math.random() * 360); // Ángulo aleatorio entre 0 y 360
+    
+            // Calcular el ángulo total para girar en sentido horario (positivo)
+            const anguloTotal = (girosCompletos * 360) + anguloAdicional;
+            rotacionActual += anguloTotal; // Aseguramos que la rotación se acumule
+    
             // Girar la ruleta con un tiempo de transición
             ruleta.style.transition = "transform 4s ease-out";
-            ruleta.style.transform = `rotate(${anguloAleatorio}deg)`;
-
+            ruleta.style.transform = `rotate(${rotacionActual}deg)`; // Aplicar la rotación acumulada
+    
             // Mostrar el resultado después de que termine la animación
             setTimeout(() => {
                 // El número de la ruleta está en el rango entre 1 y 10
-                const resultadoRuleta = Math.floor((anguloAleatorio % 360) / 36) + 1;
+                const resultadoRuleta = Math.floor((anguloTotal % 360) / 36) + 1;
                 ruletaResultado.innerHTML = `Resultado de la ruleta: ${resultadoRuleta}`;
             }, 4000); // Esperar 4 segundos para mostrar el resultado
         }
     </script>
+    
 
 </body>
 </html>
