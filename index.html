@@ -3,223 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorteo al Azar</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-            background-color: #f4f4f9;
-        }
-        #resultado {
-            font-size: 2em;
-            font-weight: bold;
-            color: green;
-            margin-top: 20px;
-        }
-        #barraCarga {
-            width: 0%;
-            height: 20px;
-            background-color: #4caf50;
-            border-radius: 10px;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 80%;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-            transition: width 20s ease; /* Barra cargando más lento */
-        }
-        #cargando {
-            font-size: 1.5em;
-            color: #ff6600;
-            font-weight: bold;
-            margin-top: 20px;
-            display: none;
-        }
-        input {
-            font-size: 1em;
-            padding: 5px;
-            margin: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-
-        /* Animaciones */
-        @keyframes animarNumero {
-            0% { font-size: 2em; color: green; }
-            50% { font-size: 3em; color: #ff6600; }
-            100% { font-size: 2.5em; color: #28a745; }
-        }
-
-        .animar {
-            animation: animarNumero 1s ease-in-out;
-        }
-
-        /* Ruleta */
-        #ruleta {
-            margin-top: 40px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 10px solid #4caf50;
-            display: inline-block;
-            position: relative;
-            background: conic-gradient(#ffeb3b 0deg 36deg, #4caf50 36deg 72deg, #ffeb3b 72deg 108deg, #4caf50 108deg 144deg, #ffeb3b 144deg 180deg, #4caf50 180deg 216deg, #ffeb3b 216deg 252deg, #4caf50 252deg 288deg, #ffeb3b 288deg 324deg, #4caf50 324deg 360deg);
-        }
-        #pointer {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 2em;
-            color: #4caf50;
-            font-weight: bold;
-        }
-        .numero {
-            position: absolute;
-            font-size: 1.5em;
-            color: white;
-            font-weight: bold;
-        }
-        #ruletaResultado {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Rifa amigos de Sandra</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Sorteo al Azar</h1>
+    <div class="container d-flex">
+        <!-- Columna izquierda para la tabla -->
+        <div class="col-4">
+            <h3 class="text-center mb-4">Historial de Sorteos</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Folio Sorteado</th>
+                        <th>Número</th> 
+                    </tr>
+                </thead>
+                <tbody id="tablaSorteos">
+                    <!-- Aquí se irán agregando los números sorteados -->
+                </tbody>
+            </table>
+        </div>
 
-    <div>
-        <label for="inicio">Número de inicio:</label>
-        <input type="number" id="inicio" required>
-        <label for="fin">Número de fin:</label>
-        <input type="number" id="fin" required>
+        <!-- Columna derecha para la interacción con el sorteo -->
+        <div class="col-8">
+            <h2 class="text-center mb-4">Rifa amigos de Sandra</h2>
+            
+            <!-- Mensaje de "Procesando..." -->
+            <div id="cargando" class="text-center mb-4">Procesando...</div>
+            
+            <!-- Campos para ingresar los números de inicio y final -->
+            <input type="number" id="inicio" placeholder="Ingresa el número de inicio" class="form-control mb-3">
+            <input type="number" id="fin" placeholder="Ingresa el número final" class="form-control mb-3">
+            
+
+            <!-- Botón para realizar el sorteo -->
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="realizarSorteo()">Realizar Sorteo</button>
+            </div>
+            
+            <!-- Barra de carga -->
+            <div id="barraCarga" class="mt-4"></div>
+            
+            <!-- Resultado del sorteo -->
+            <div id="resultado" class="mt-4"></div>
+        </div>
     </div>
 
-    <button onclick="realizarSorteo()">Generar Sorteo</button>
-
-    <div id="cargando">Procesando...</div>
-    <div id="barraCarga"></div>
-    <div id="resultado"></div>
-
-    <!-- Ruleta -->
-    <div id="ruleta">
-        <div id="pointer">↑</div>
-        <!-- Números de la ruleta -->
-        <div class="numero" style="top: 0%; left: 60%; transform: translateX(-50%);">1</div> <!-- Top Center -->
-        <div class="numero" style="top: 18%; left: 85%; transform: translateY(-50%);">2</div> <!-- 2 en el borde superior derecho -->
-        <div class="numero" style="top: 50%; left: 90%; transform: translateY(-50%) translateX(-100%);">3</div> <!-- 3 en la parte superior derecha -->
-        <div class="numero" style="top: 80%; left: 85%; transform: translateY(-50%);">4</div> <!-- 4 en la parte inferior derecha -->
-        <div class="numero" style="top: 100%; left: 60%; transform: translateX(-50%) translateY(-100%);">5</div> <!-- 5 en la parte inferior central -->
-        <div class="numero" style="top: 82%; left: 15%; transform: translateY(-50%);">6</div> <!-- 6 en la parte inferior izquierda -->
-        <div class="numero" style="top: 50%; left: 10%; transform: translateY(-50%) translateX(-100%);">7</div> <!-- 7 en la parte izquierda media -->
-        <div class="numero" style="top: 18%; left: 15%; transform: translateY(-50%);">8</div> <!-- 8 en la parte superior izquierda -->
-        <div class="numero" style="top: 0%; left: 40%; transform: translateX(-50%);">9</div> <!-- 9 en la parte superior central -->
-        <div class="numero" style="top: 95%; left: 39%; transform: translateX(-50%) translateY(-100%);">10</div> <!-- 10 en la parte inferior izquierda -->
-    </div>
-    <div id="ruletaResultado"></div>
-    
-    <button onclick="girarRuleta()">Girar Ruleta</button>
-
-    <script>
-        function realizarSorteo() {
-            const inicio = parseInt(document.getElementById("inicio").value);
-            const fin = parseInt(document.getElementById("fin").value);
-            const resultadoDiv = document.getElementById("resultado");
-            const cargandoDiv = document.getElementById("cargando");
-            const barraCarga = document.getElementById("barraCarga");
-
-            if (isNaN(inicio) || isNaN(fin) || inicio >= fin) {
-                resultadoDiv.innerHTML = "Por favor, ingresa un rango válido.";
-                return;
-            }
-
-            // Calcular el rango y determinar el tiempo de espera proporcional
-            const rango = fin - inicio;
-            const tiempoEspera = Math.min(10, Math.max(3, rango / 10)); // Tiempo proporcional en segundos (máximo 10, mínimo 3)
-
-            // Hacer que la barra de carga se llene más lentamente que el tiempo de espera
-            const tiempoCargaBarra = tiempoEspera + 5; // Aumentar el tiempo de la barra de carga
-
-            // Reiniciar y ocultar la barra de carga al iniciar un nuevo sorteo
-            barraCarga.style.width = "0%"; // Reiniciar barra de carga
-            barraCarga.style.display = "block"; // Mostrar la barra de carga
-            cargandoDiv.style.display = "block"; // Mostrar el mensaje "Procesando..."
-
-            // Establecer la transición de la barra de carga para que dure más tiempo que el de espera
-            barraCarga.style.transition = `width ${tiempoCargaBarra}s ease`;
-
-            // Establecer el valor de la barra de carga (rellenándola)
-            setTimeout(() => {
-                barraCarga.style.width = "100%"; // La barra se llena en el tiempo ajustado
-            }, 10); // Esperar un pequeño intervalo para forzar la transición
-
-            // Retrasar el resultado por el tiempo de espera (mayor que la carga de la barra)
-            setTimeout(() => {
-                // Generar el número aleatorio
-                const numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
-
-                // Mostrar el número sorteado con animación
-                cargandoDiv.style.display = "none"; // Ocultar "Procesando..."
-                resultadoDiv.innerHTML = `¡El número sorteado es: <span class="animar">${numeroSorteado}</span>!`;
-
-                // Reaplicar la animación (esto reinicia la animación del número)
-                const numeroAnimado = resultadoDiv.querySelector("span");
-                numeroAnimado.classList.remove("animar");
-                void numeroAnimado.offsetWidth; // Forzar reflow para reiniciar la animación
-                numeroAnimado.classList.add("animar");
-
-                // Ocultar la barra de carga después del sorteo
-                barraCarga.style.display = "none"; // Ocultar la barra de carga
-
-            }, tiempoEspera * 1000); // El sorteo se retrasará durante el tiempo completo de espera
-        }        
-    </script>
-    <script>
-        let rotacionActual = 0; // Para almacenar la rotación acumulada
-    
-        function girarRuleta() {
-            const ruleta = document.getElementById("ruleta");
-            const ruletaResultado = document.getElementById("ruletaResultado");
-            const pointer = document.getElementById("pointer");
-    
-            // Definir el número de giros completos y un ángulo adicional aleatorio
-            const girosCompletos = Math.floor(Math.random() * 3) + 3; // 3 a 5 giros completos
-            const anguloAdicional = Math.floor(Math.random() * 360); // Ángulo aleatorio entre 0 y 360
-    
-            // Calcular el ángulo total para girar en sentido horario (positivo)
-            const anguloTotal = (girosCompletos * 360) + anguloAdicional;
-            rotacionActual += anguloTotal; // Aseguramos que la rotación se acumule
-    
-            // Girar la ruleta con un tiempo de transición
-            ruleta.style.transition = "transform 4s ease-out";
-            ruleta.style.transform = `rotate(${rotacionActual}deg)`; // Aplicar la rotación acumulada
-    
-            // Mostrar el resultado después de que termine la animación
-            setTimeout(() => {
-                // El número de la ruleta está en el rango entre 1 y 10
-                const resultadoRuleta = Math.floor((anguloTotal % 360) / 36) + 1;
-                ruletaResultado.innerHTML = `Resultado de la ruleta: ${resultadoRuleta}`;
-            }, 4000); // Esperar 4 segundos para mostrar el resultado
-        }
-    </script>
-    
-
+    <!-- Bootstrap JS & Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <!-- Script del sorteo -->
+    <script src="front.js"></script>
 </body>
 </html>

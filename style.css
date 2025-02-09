@@ -1,0 +1,143 @@
+:root {
+    --rosa-claro: #f8bbd0;
+    --rosa-pastel: #fbe5f6;
+    --rosa-fuerte: #f06292;
+    --rosa-brillante: #ff80ab;
+    --verde-suave: #a5d6a7;
+    --morado-pastel: #9c27b0;
+    --amarillo-pastel: #ffeb3b;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--rosa-pastel); /* Rosa pastel claro */
+    padding: 50px 0;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 500px;
+    margin: auto;
+}
+
+#resultado {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--rosa-fuerte);
+    margin-top: 20px;
+    animation: animarNumero 1s ease-in-out infinite;
+}
+
+#barraCarga {
+    width: 0%;
+    height: 20px;
+    background-color: var(--verde-suave);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+    transition: width 20s ease;
+}
+
+#cargando {
+    font-size: 1.5em;
+    color: var(--rosa-brillante);
+    font-weight: bold;
+    margin-top: 20px;
+    display: none;
+}
+
+input,
+button {
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+input {
+    border: 2px solid var(--rosa-claro);
+    background-color: #fce4ec;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: var(--amarillo-pastel);
+    color: #5c6bc0;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--rosa-brillante);
+    transform: scale(1.05); /* Efecto de escala para destacar */
+}
+
+.animar {
+    animation: animarNumero 1s ease-in-out;
+}
+
+@keyframes animarNumero {
+    0% {
+        font-size: 2.5em;
+        color: var(--rosa-fuerte);
+    }
+
+    50% {
+        font-size: 3.5em;
+        color: var(--rosa-brillante);
+    }
+
+    100% {
+        font-size: 2.8em;
+        color: var(--rosa-fuerte);
+    }
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.numero-animado {
+    font-size: 3em;
+    color: var(--rosa-fuerte);
+    animation: animarNumero 1s ease-in-out infinite;
+}
+
+/* Estilo adicional para mejorar la accesibilidad */
+input:focus,
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--rosa-fuerte);
+}
+
+input:disabled,
+button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    #resultado {
+        font-size: 2em;
+    }
+
+    input,
+    button {
+        font-size: 1.1em;
+    }
+}
