@@ -10,46 +10,63 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container d-flex mt-5">
-        <!-- Columna izquierda para la tabla -->
-        <div class="col-lg-5 col-md-6">
-            <h3 class="text-center mb-4">Historial de Sorteos</h3>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Folio Sorteado</th>
-                        <th>Número</th> 
-                    </tr>
-                </thead>
-                <tbody id="tablaSorteos">
-                    <!-- Aquí se irán agregando los números sorteados -->
-                </tbody>
-            </table>
-        </div>
-        <!-- Columna derecha para la interacción con el sorteo -->
-        <div class="col-lg-7 col-md-6">
-            <h2 class="text-center mb-4">Sorteo de folio</h2>
-            
-            <!-- Mensaje de "Procesando..." -->
-            <div id="cargando" class="text-center mb-4">Procesando...</div>
-            
-            <!-- Campos para ingresar los números de inicio y final -->
-            <input type="number" id="inicio" placeholder="Ingresa el número de inicio" class="form-control mb-3">
-            <input type="number" id="fin" placeholder="Ingresa el número final" class="form-control mb-3">
-            
-            <!-- Botón para realizar el sorteo -->
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="realizarSorteo()">Realizar Sorteo</button>
+    <!-- Contenedor principal -->
+    <div class="container mt-5">
+        <!-- Título principal -->
+        <h1 class="text-center mb-4 text-uppercase fw-bold" style="color: var(--rosa-fuerte);">Rifa Amigos de Sandra</h1>
+
+        <!-- Contenedor de las tarjetas -->
+        <div class="row g-4">
+            <!-- Card 1: Historial de Sorteos -->
+            <div class="col-lg-5 col-md-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Historial de Sorteos</h3>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Folio Sorteado</th>
+                                    <th>Número</th> 
+                                </tr>
+                            </thead>
+                            <tbody id="tablaSorteos">
+                                <!-- Aquí se irán agregando los números sorteados -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Barra de carga -->
-            <div id="barraCarga" class="mt-4"></div>
-            
-            <!-- Resultado del sorteo -->
-            <div id="resultado" class="mt-4"></div>
+
+            <!-- Card 2: Sorteo de Folio -->
+            <div class="col-lg-7 col-md-12">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Sorteo de Folio</h2>
+                        
+                        <!-- Mensaje de "Procesando..." -->
+                        <div id="cargando" class="text-center mb-4">Procesando...</div>
+                        
+                        <!-- Campos para ingresar los números de inicio y final -->
+                        <input type="number" id="inicio" placeholder="Ingresa el número de inicio" class="form-control mb-3">
+                        <input type="number" id="fin" placeholder="Ingresa el número final" class="form-control mb-3">
+                        
+                        <!-- Botón para realizar el sorteo -->
+                        <div class="btn-group">
+                            <button class="btn btn-primary w-100" onclick="realizarSorteo()">Realizar Sorteo</button>
+                        </div>
+                        
+                        <!-- Barra de carga -->
+                        <div id="barraCarga" class="mt-4"></div>
+                        
+                        <!-- Resultado del sorteo -->
+                        <div id="resultado" class="mt-4 text-center"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <!-- Bootstrap JS & Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
