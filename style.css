@@ -8,6 +8,18 @@
     --amarillo-pastel: #ffeb3b;
 }
 
+.card {
+    border-radius: 15px;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.card-title {
+    color: var(--rosa-fuerte);
+    font-size: 1.5em;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--rosa-pastel); /* Rosa pastel claro */
@@ -19,8 +31,10 @@ body {
     border-radius: 15px;
     box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    max-width: 500px;
+    max-width: 1200px; /* Aumentamos el ancho máximo del card */
     margin: auto;
+    display: flex;
+    justify-content: space-between; /* Distribuye las columnas */
 }
 
 #resultado {
@@ -90,12 +104,10 @@ button:hover {
         font-size: 2.5em;
         color: var(--rosa-fuerte);
     }
-
     50% {
         font-size: 3.5em;
         color: var(--rosa-brillante);
     }
-
     100% {
         font-size: 2.8em;
         color: var(--rosa-fuerte);
@@ -127,9 +139,14 @@ button:disabled {
     cursor: not-allowed;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1200px) {
     .container {
         padding: 20px;
+    }
+
+    .col-lg-5,
+    .col-lg-7 {
+        width: 100%; /* Las columnas ocupan todo el ancho en pantallas pequeñas */
     }
 
     #resultado {
