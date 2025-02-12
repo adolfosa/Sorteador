@@ -1,4 +1,5 @@
 let contadorSorteos = 0;
+let temporizadorResultado = null; // Para controlar el temporizador de animación
 
 // Función para obtener el valor de una cookie por su nombre
 function obtenerCookie(nombre) {
@@ -36,6 +37,11 @@ function realizarSorteo() {
     const barraCarga = document.getElementById("barraCarga");
     const inputNumero = document.getElementById("numero");
 
+    // Si hay un resultado anterior, ocultarlo antes de hacer el nuevo sorteo
+    if (resultadoDiv.innerHTML) {
+        resultadoDiv.innerHTML = "";
+    }
+
     // Validar que el rango de inicio y fin sea correcto
     if (isNaN(inicio) || isNaN(fin) || inicio >= fin) {
         resultadoDiv.innerHTML = "Por favor, ingresa un rango válido.";
@@ -66,7 +72,7 @@ function realizarSorteo() {
     setTimeout(() => {
         // Generar el número aleatorio
         const numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
-        
+
         // Mostrar el número sorteado con animación
         cargandoDiv.style.display = "none"; // Ocultar "Procesando..."
         resultadoDiv.innerHTML = `¡El número sorteado es: <span class="animar">${numeroSorteado}</span>!`;
@@ -77,6 +83,15 @@ function realizarSorteo() {
         void numeroAnimado.offsetWidth; // Forzar reflow para reiniciar la animación
         numeroAnimado.classList.add("animar");
 
+        // Detener la animación después de 5 segundos y dejar el número fijo
+        temporizadorResultado = setTimeout(() => {
+            const numeroFijo = resultadoDiv.querySelector("span"); // Obtener el span del número
+            numeroFijo.classList.remove("animar"); // Eliminar la clase de animación
+            // El número queda estático y sin animación
+            resultadoDiv.innerHTML = `¡El número sorteado es: <span>${numeroSorteado}</span>!`;
+        }, 5000); // 5 segundos
+        
+
         // Ocultar la barra de carga después del sorteo
         barraCarga.style.display = "none"; // Ocultar la barra de carga
 
@@ -84,7 +99,10 @@ function realizarSorteo() {
         contadorSorteos++;
         const tablaSorteos = document.getElementById("tablaSorteos");
         const nuevaFila = document.createElement("tr");
-        nuevaFila.innerHTML = `<td>${contadorSorteos}</td><td>${numeroSorteado}</td><td><input type="number" id="numero${contadorSorteos}" max="99" min="10" placeholder="Número (2 dígitos)"></td>`;
+        nuevaFila.innerHTML = `<td>${contadorSorteos}</td><td>${numeroSorteado}</td>
+        <td><input type="number" id="numero${contadorSorteos}" max="99" min="10" placeholder="Número">
+        <input type="nombre" id="nombre${contadorSorteos}" max="99" min="10" placeholder="Ganador"></td>
+        `;
         tablaSorteos.appendChild(nuevaFila);
 
         // Habilitar el campo de entrada de número después del primer sorteo
@@ -110,7 +128,10 @@ window.onload = function() {
     } else {
         historial.forEach((sorteo) => {
             const nuevaFila = document.createElement("tr");
-            nuevaFila.innerHTML = `<td>${sorteo.contador}</td><td>${sorteo.numeroSorteado}</td><td><input type="number" id="numero${sorteo.contador}" max="99" min="10" placeholder="Número (2 dígitos)"></td>`;
+            nuevaFila.innerHTML = `<td>${sorteo.contador}</td>
+            <td>${sorteo.numeroSorteado}</td>
+            <td><input type="number" id="numero${sorteo.contador}" max="99" min="10" placeholder="Número"></td>`;
+            
             tablaSorteos.appendChild(nuevaFila);
             contadorSorteos = sorteo.contador; // Mantener el contador actualizado
         });
