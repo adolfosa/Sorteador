@@ -2,33 +2,6 @@ let contadorSorteos = 0;
 let temporizadorResultado = null; // Para controlar el temporizador de animación
 
 // Función para obtener el valor de una cookie por su nombre
-function obtenerCookie(nombre) {
-    const nombreCookie = nombre + "=";
-    const listaCookies = document.cookie.split(';');
-    for (let i = 0; i < listaCookies.length; i++) {
-        let cookie = listaCookies[i].trim();
-        if (cookie.indexOf(nombreCookie) === 0) {
-            return cookie.substring(nombreCookie.length, cookie.length);
-        }
-    }
-    return "";
-}
-
-// Función para guardar el historial de sorteos en una cookie
-function guardarEnCookie(historial) {
-    console.log("Guardando historial en cookie:", historial); // Depuración
-    document.cookie = "historialSorteos=" + JSON.stringify(historial) + ";path=/;max-age=" + 60 * 60 * 24 * 7; // Caduca en 7 días
-}
-
-// Función para cargar el historial de sorteos desde la cookie
-function cargarHistorialDeCookie() {
-    const historialJSON = obtenerCookie("historialSorteos");
-    if (historialJSON) {
-        return JSON.parse(historialJSON);
-    }
-    return [];
-}
-
 function realizarSorteo() {
     const inicio = parseInt(document.getElementById("inicio").value);
     const fin = parseInt(document.getElementById("fin").value);
@@ -75,7 +48,7 @@ function realizarSorteo() {
 
         // Mostrar el número sorteado con animación
         cargandoDiv.style.display = "none"; // Ocultar "Procesando..."
-        resultadoDiv.innerHTML = `¡El número sorteado es: <span class="animar">${numeroSorteado}</span>!`;
+        resultadoDiv.innerHTML = `¡El folio ganador es: <span class="animar">${numeroSorteado}</span>!`;
 
         // Reaplicar la animación (esto reinicia la animación del número)
         const numeroAnimado = resultadoDiv.querySelector("span");
@@ -83,14 +56,12 @@ function realizarSorteo() {
         void numeroAnimado.offsetWidth; // Forzar reflow para reiniciar la animación
         numeroAnimado.classList.add("animar");
 
-        // Detener la animación después de 5 segundos y dejar el número fijo
-        temporizadorResultado = setTimeout(() => {
+        // No necesitamos detener la animación ahora, porque la animación se mantiene en el estado final después de 5s
+        // Si aún quieres garantizar el tamaño máximo, puedes hacer:
+        setTimeout(() => {
             const numeroFijo = resultadoDiv.querySelector("span"); // Obtener el span del número
-            numeroFijo.classList.remove("animar"); // Eliminar la clase de animación
-            // El número queda estático y sin animación
-            resultadoDiv.innerHTML = `¡El número sorteado es: <span>${numeroSorteado}</span>!`;
-        }, 5000); // 5 segundos
-        
+            numeroFijo.style.fontSize = "3.5em"; // Establecer el tamaño máximo manualmente
+        }, 5000); // 5 segundos después de la animación
 
         // Ocultar la barra de carga después del sorteo
         barraCarga.style.display = "none"; // Ocultar la barra de carga
