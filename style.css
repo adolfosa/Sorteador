@@ -40,7 +40,12 @@ h1 {
   margin: auto;
   display: grid;
   place-items: center;
+  position: sticky;
+  top: 0; /* Se mantendrá en la parte superior */
+  background: #f8bbd0; /* Asegura que no se superponga con contenido detrás */
+  z-index: 100; /* Asegura que quede por encima de otros elementos */
 }
+
 .slide-track {
   display: flex;
   width: calc(300px * 15);
