@@ -133,6 +133,13 @@ img:hover {
   font-weight: bold;
   color: var(--rosa-fuerte);
   margin-top: 20px;
+}
+
+#resultadoNum {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: var(--rosa-fuerte);
+  margin-top: 20px;
   animation: animarNumero 1s ease-in-out infinite;
 }
 
@@ -161,7 +168,7 @@ img:hover {
 input,
 button {
   font-size: 1.2em;
-  padding: 10px;
+  padding: 5px;
   border-radius: 10px;
 }
 
@@ -200,7 +207,7 @@ button:hover {
       color: var(--rosa-brillante);
   }
   100% {
-      font-size: 2.8em;
+      font-size: 2.5em;
       color: var(--rosa-fuerte);
   }
 }
@@ -247,6 +254,10 @@ button:disabled {
 
   #resultado {
       font-size: 2em;
+  }
+
+  #resultadoNum {
+    font-size: 2em;
   }
 
   input,

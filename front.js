@@ -6,13 +6,14 @@ function realizarSorteo() {
     const inicio = parseInt(document.getElementById("inicio").value);
     const fin = parseInt(document.getElementById("fin").value);
     const resultadoDiv = document.getElementById("resultado");
+    const resultadoNumDiv = document.getElementById("resultadoNum");
     const cargandoDiv = document.getElementById("cargando");
     const barraCarga = document.getElementById("barraCarga");
     const inputNumero = document.getElementById("numero");
 
-    // Si hay un resultado anterior, ocultarlo antes de hacer el nuevo sorteo
-    if (resultadoDiv.innerHTML) {
-        resultadoDiv.innerHTML = "";
+    resultadoDiv.innerHTML = `¡El número ganador es:`;
+    if (resultadoNumDiv.innerHTML) {
+        resultadoNumDiv.innerHTML = "";
     }
 
     // Validar que el rango de inicio y fin sea correcto
@@ -41,70 +42,57 @@ function realizarSorteo() {
         barraCarga.style.width = "100%"; // La barra se llena en el tiempo ajustado
     }, 10); // Esperar un pequeño intervalo para forzar la transición
 
+    let intervaloAnimacion = setInterval(() => {
+        const numeroAleatorio = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
+        resultadoNumDiv.innerHTML = `<span style="font-size: 1.5em;">${numeroAleatorio}</span>`;
+    }, 80);
+
     // Retrasar el resultado por el tiempo de espera (mayor que la carga de la barra)
     setTimeout(() => {
+        clearInterval(intervaloAnimacion);
+
         // Generar el número aleatorio
         const numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
 
         // Mostrar el número sorteado con animación
         cargandoDiv.style.display = "none"; // Ocultar "Procesando..."
-        resultadoDiv.innerHTML = `¡El folio ganador es: <span class="animar">${numeroSorteado}</span>!`;
-
-        // Reaplicar la animación (esto reinicia la animación del número)
-        const numeroAnimado = resultadoDiv.querySelector("span");
-        numeroAnimado.classList.remove("animar");
-        void numeroAnimado.offsetWidth; // Forzar reflow para reiniciar la animación
-        numeroAnimado.classList.add("animar");
-
-        // No necesitamos detener la animación ahora, porque la animación se mantiene en el estado final después de 5s
-        // Si aún quieres garantizar el tamaño máximo, puedes hacer:
-        setTimeout(() => {
-            const numeroFijo = resultadoDiv.querySelector("span"); // Obtener el span del número
-            numeroFijo.style.fontSize = "3.5em"; // Establecer el tamaño máximo manualmente
-        }, 5000); // 5 segundos después de la animación
+        resultadoNumDiv.innerHTML = `<span style="font-size: 3.5em;">${numeroSorteado}!</span>`;
 
         // Ocultar la barra de carga después del sorteo
         barraCarga.style.display = "none"; // Ocultar la barra de carga
-
-        // Registrar el sorteo en la tabla
-        contadorSorteos++;
-        const tablaSorteos = document.getElementById("tablaSorteos");
-        const nuevaFila = document.createElement("tr");
-        nuevaFila.innerHTML = `<td>${contadorSorteos}</td><td>${numeroSorteado}</td>
-        <td><input type="number" id="numero${contadorSorteos}" max="99" min="10" placeholder="Número">
-        <input type="nombre" id="nombre${contadorSorteos}" max="99" min="10" placeholder="Ganador"></td>
-        `;
-        tablaSorteos.appendChild(nuevaFila);
 
         // Habilitar el campo de entrada de número después del primer sorteo
         if (contadorSorteos === 1) {
             inputNumero.disabled = false; // Habilitar el campo de número
         }
 
-        // Actualizar el historial de sorteos en la cookie
-        const historial = cargarHistorialDeCookie();
-        historial.push({ numeroSorteado: numeroSorteado, contador: contadorSorteos });
-        guardarEnCookie(historial);
-
     }, tiempoEspera * 1000); // El sorteo se retrasará durante el tiempo completo de espera
 }
 
 // Cargar historial desde la cookie al cargar la página
 window.onload = function() {
-    const historial = cargarHistorialDeCookie();
     const tablaSorteos = document.getElementById("tablaSorteos");
 
-    if (historial.length === 0) {
-        console.log("No se encontraron sorteos previos en las cookies.");
-    } else {
-        historial.forEach((sorteo) => {
-            const nuevaFila = document.createElement("tr");
-            nuevaFila.innerHTML = `<td>${sorteo.contador}</td>
-            <td>${sorteo.numeroSorteado}</td>
-            <td><input type="number" id="numero${sorteo.contador}" max="99" min="10" placeholder="Número"></td>`;
-            
-            tablaSorteos.appendChild(nuevaFila);
-            contadorSorteos = sorteo.contador; // Mantener el contador actualizado
-        });
-    }
+    const Premios = [
+        "TV 50 pulgadas",
+        "Celular Samsung",
+        "Bicicleta de montaña",
+        "Aspiradora Robot",
+        "Parlante Bluetooth",
+        "TV 50 pulgadas",
+        "Celular Samsung",
+        "Bicicleta de montaña",
+        "Aspiradora Robot",
+        "Parlante Bluetooth"
+    ];
+
+    Premios.forEach((premio) => {
+        const nuevaFila = document.createElement("tr");
+        nuevaFila.innerHTML = 
+            `<td style="font-size: 1.5em;">${premio}</td>
+            <td> <input type="number" placeholder="-"> </td>
+            <td> <input type="string" placeholder="-"> </td>`;
+        tablaSorteos.appendChild(nuevaFila);
+    });
+    contadorSorteos = Premios.length;
 };
