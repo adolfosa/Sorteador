@@ -83,7 +83,7 @@
       </ul>
     </div>
     
-    <div class="container mt-5">    
+    <div class="container-fluid mt-5">    
   
       <!-- Contenedor de las tarjetas -->
       <div class="d-flex flex-wrap justify-content-between">
@@ -91,14 +91,15 @@
         <div class="card mb-4" style="flex: 1 1 48%;">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4">Historial de Sorteos</h3>
-                <table class="table table-bordered">
+                  <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Folio Sorteado</th>
-                            <th>Número</th>
-                        </tr>
-                    </thead>
+                      <tr>
+                          <th style="width: 5%;">#</th> 
+                          <th style="width: 40%;">Premio</th>
+                          <th style="width: 15%;">Número</th>
+                          <th style="width: 45%;">Ganador</th>
+                      </tr>
+                    </thead>                  
                     <tbody id="tablaSorteos">
                         <!-- Aquí se irán agregando los números sorteados -->
                     </tbody>
@@ -128,6 +129,9 @@
                 
                 <!-- Resultado del sorteo -->
                 <div id="resultado" class="mt-4 text-center"></div>
+
+                <!-- Resultado del sorteo -->
+                <div id="resultadoNum" class="mt-4 text-center"></div>
             </div>
         </div>
     </div>
