@@ -86,13 +86,14 @@ window.onload = function() {
         "Parlante Bluetooth"
     ];
 
-    Premios.forEach((premio) => {
+    Premios.forEach((premio, index) => {
         const nuevaFila = document.createElement("tr");
         nuevaFila.innerHTML = 
-            `<td style="font-size: 1.5em;">${premio}</td>
-            <td> <input type="number" placeholder="-"> </td>
-            <td> <input type="string" placeholder="-"> </td>`;
+            `<td style="font-size: 1.5em;">${index + 1}</td> 
+             <td style="font-size: 1.5em;">${premio}</td>
+             <td> <input type="number" placeholder="-"> </td>
+             <td> <input type="string" placeholder="-"> </td>`;
         tablaSorteos.appendChild(nuevaFila);
-    });
+    });    
     contadorSorteos = Premios.length;
 };
