@@ -1,8 +1,11 @@
 let contadorSorteos = 0;
 let temporizadorResultado = null; // Para controlar el temporizador de animación
+let yacomenzo = false;
 
 // Función para obtener el valor de una cookie por su nombre
 function realizarSorteo() {
+    if (yacomenzo) return;
+
     const inicio = parseInt(document.getElementById("inicio").value);
     const fin = parseInt(document.getElementById("fin").value);
     const resultadoDiv = document.getElementById("resultado");
@@ -10,18 +13,19 @@ function realizarSorteo() {
     const cargandoDiv = document.getElementById("cargando");
     const barraCarga = document.getElementById("barraCarga");
     const inputNumero = document.getElementById("numero");
-
+    
     resultadoDiv.innerHTML = `¡El número ganador es:`;
     if (resultadoNumDiv.innerHTML) {
         resultadoNumDiv.innerHTML = "";
     }
-
+    
     // Validar que el rango de inicio y fin sea correcto
     if (isNaN(inicio) || isNaN(fin) || inicio >= fin) {
         resultadoDiv.innerHTML = "Por favor, ingresa un rango válido.";
         return;
     }
-
+    
+    yacomenzo = true;
     // Calcular el rango y determinar el tiempo de espera proporcional
     const rango = fin - inicio;
     const tiempoEspera = Math.min(10, Math.max(3, rango / 10)); // Tiempo proporcional en segundos (máximo 10, mínimo 3)
@@ -42,14 +46,28 @@ function realizarSorteo() {
         barraCarga.style.width = "100%"; // La barra se llena en el tiempo ajustado
     }, 10); // Esperar un pequeño intervalo para forzar la transición
 
+    let audioBeep = document.getElementById("sonidoNumero");
+
     let intervaloAnimacion = setInterval(() => {
         const numeroAleatorio = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
         resultadoNumDiv.innerHTML = `<span style="font-size: 1.5em;">${numeroAleatorio}</span>`;
-    }, 80);
+
+        if (!audioBeep.paused)
+            audioBeep.currentTime = 0;
+
+        audioBeep.play();
+    }, 100);
 
     // Retrasar el resultado por el tiempo de espera (mayor que la carga de la barra)
     setTimeout(() => {
         clearInterval(intervaloAnimacion);
+
+        yacomenzo = false;
+        let audioRevelacion = document.getElementById("sonidoRevelacion");
+        if (!audioRevelacion.paused)
+            audioRevelacion.currentTime = 0;
+
+        audioRevelacion.play();
 
         // Generar el número aleatorio
         const numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
@@ -74,16 +92,30 @@ window.onload = function() {
     const tablaSorteos = document.getElementById("tablaSorteos");
 
     const Premios = [
-        "TV 50 pulgadas",
-        "Celular Samsung",
-        "Bicicleta de montaña",
-        "Aspiradora Robot",
-        "Parlante Bluetooth",
-        "TV 50 pulgadas",
-        "Celular Samsung",
-        "Bicicleta de montaña",
-        "Aspiradora Robot",
-        "Parlante Bluetooth"
+        "Cafetera",
+        "Pulsera de Plata",
+        "Horno eléctrico",
+        "Soporte de TV",
+        "Pinzas para asado con led",
+        "2 Candelabros",
+        "Minipimer Somela",
+        "6 Vinos Diablo Rojo",
+        "Chivas Regal 12 años (750cc)",
+        "Caja de Cerveza Corona (pack de 24)",
+        "Bateria cocina 5 piezas",
+        "6 Posillos de postre",
+        "Sabana plaza y media",
+        "3 Vasos Wiskeros",
+        "Set para jugos",
+        "Sandwichera",
+        "Polera algodón negra diseño",
+        "Polera algodón naranja diseño",
+        "Polera de hilo manga larga diseño",
+        "Par de Botines N°37",
+        "Bolso deportivo Xtrem",
+        "Gift Card $30.000",
+        "Juego de Vasos",
+        "¡Guitarra Electroacústica!"
     ];
 
     Premios.forEach((premio, index) => {
