@@ -1,11 +1,13 @@
 let contadorSorteos = 0;
 let temporizadorResultado = null; // Para controlar el temporizador de animación
 let yacomenzo = false;
+let numerosSortedos = [];
 
 // Función para obtener el valor de una cookie por su nombre
 function realizarSorteo() {
     if (yacomenzo) return;
 
+    
     const inicio = parseInt(document.getElementById("inicio").value);
     const fin = parseInt(document.getElementById("fin").value);
     const resultadoDiv = document.getElementById("resultado");
@@ -14,6 +16,11 @@ function realizarSorteo() {
     const barraCarga = document.getElementById("barraCarga");
     const inputNumero = document.getElementById("numero");
     
+    const totalPosibles = fin - inicio + 1;
+    if (numerosSortedos.length >= totalPosibles){
+        resultadoDiv.innerHTML = "Ya han salido todos los números posibles. Reinicia el sorteo.";
+        return;
+    }
     resultadoDiv.innerHTML = `¡El número ganador es:`;
     if (resultadoNumDiv.innerHTML) {
         resultadoNumDiv.innerHTML = "";
@@ -69,9 +76,18 @@ function realizarSorteo() {
 
         audioRevelacion.play();
 
-        // Generar el número aleatorio
-        const numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
+        let numeroUnico = false;
+        let numeroSorteado;
 
+        while (!numeroUnico) {
+            numeroSorteado = Math.floor(Math.random() * (fin - inicio + 1)) + inicio;
+
+            if (!numerosSortedos.includes(numeroSorteado)) {
+                numeroUnico = true;
+                numerosSortedos.push(numeroSorteado);
+            }
+        }
+        
         // Mostrar el número sorteado con animación
         cargandoDiv.style.display = "none"; // Ocultar "Procesando..."
         resultadoNumDiv.innerHTML = `<span style="font-size: 3.5em;">${numeroSorteado}!</span>`;
